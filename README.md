@@ -91,7 +91,7 @@ To get a local copy up and running, follow these steps.
 
 ### Prerequisites
 
-In order to run this project you need: ` to install Postgres `
+In order to run this project you need: ` run bundle install `
 
 <!--
 Example command:
