@@ -2,9 +2,8 @@ require './Nameable'
 require './rental'
 
 class Person < Nameable
-  attr_accessor :name, :age
+  attr_accessor :name, :age, :rentals
   attr_reader :id, :parent_permission
-  attr_accessor :rentals
 
   def initialize(age, name = 'unknown', parent_permission: true)
     super()
