@@ -2,14 +2,13 @@ require './person'
 require './book'
 
 class Rental
-  attr_accessor :date, :person, :book
+  attr_accessor :person, :book
 
-  def initialize(person, book, date)
-    @date = date
+  def initialize(person, book)
     @person = person
     @book = book
 
-    person.add_rental(self)
-    book.add_rental(self)
+    person.rentals << self
+    book.rentals << self
   end
 end

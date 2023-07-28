@@ -1,8 +1,9 @@
 class Classroom
-  attr_accessor :lable, :students
+  attr_accessor :label
+  attr_reader :students
 
-  def initialize(lable)
-    @lable = lable
+  def initialize(label)
+    @lable = label
     @students = []
   end
 
