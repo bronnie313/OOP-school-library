@@ -3,17 +3,20 @@ require './book'
 require './rental'
 
 $people = []
+$books = []
 
 def list_of_books
     puts "List of all books:"
-    $people.each do |person|
-        puts "id: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+    $books.each do |book|
+        puts "Title: #{book.title}, Author: #{book.author}"
     end
 end
 
 def list_of_people
     puts "List of all people (teachers and students):"
-
+    $people.each do |person|
+        puts "id: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+    end
 end
 
 def create_person
@@ -31,7 +34,17 @@ def create_person
 end
 
 def create_book
+    puts "Create a book: "
+    print "Title: "
+    title = gets.chomp
 
+    print "Author: "
+    author = gets.chomp
+    
+    book = Book.new(title, author)
+    $books << book
+
+    puts "Book created successfully"
 end
 
 def create_rental
