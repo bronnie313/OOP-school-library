@@ -1,4 +1,6 @@
 require './person'
+require './student'
+require './teacher'
 require './book'
 require './rental'
 
@@ -7,15 +9,15 @@ $books = []
 
 def list_of_books
     puts "List of all books:"
-    $books.each do |book|
-        puts "Title: #{book.title}, Author: #{book.author}"
+    $books.each do |book, index|
+        puts "#{index + 1} - Title: #{book.title}, Author: #{book.author}"
     end
 end
 
 def list_of_people
     puts "List of all people (teachers and students):"
-    $people.each do |person|
-        puts "id: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+    $people.each do |person, index|
+        puts "#{index + 1} - Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
     end
 end
 
@@ -48,11 +50,30 @@ def create_book
 end
 
 def create_rental
+    print "Select a book from the following list by number"
+    book_index = gets.chomp.to_i
+    book = $books[book_index]
 
+    print "Select a person from the following list by number (not id): "
+    person_id = gets.chomp.to_i
+    person = $people[person_index]
+
+    puts "Date: "
+    date = gets.chomp
+
+    rental = Rental.new(date, person, book)
+
+    puts "Rental created successfully!"
 end
 
 def list_rentals_for_person(person_id)
+    puts "ID of the person: "
+    person_id = gets.chomp.to_i
 
+    person = $people.find { |p| p.id == person_id }
+    person.rentals.each do |rental|
+        puts "Date: #{rental.date}, Book #{rental.book.title} by #{rental.book.author}"
+    end
 end
 
 #Method to create student
@@ -69,14 +90,14 @@ def create_student
 
     parent_permission = parent_permission_input == 'y'
     
-    student = Student.new(nil, age, name, parent_permission: parent_permission)
+    student = Student.new(age, name, parent_permission)
     $people << student
 
     puts "Person created successfully"
 end
 
 #method to create teacher
-def create_student
+def create_teacher
     puts "Create Teacher:"
     print "Age: "
     age = gets.chomp.to_i
