@@ -2,10 +2,13 @@ require './person'
 require './book'
 require './rental'
 
+$people = []
+
 def list_of_books
     puts "List of all books:"
-
-
+    $people.each do |person|
+        puts "id: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+    end
 end
 
 def list_of_people
@@ -54,6 +57,7 @@ def create_student
     parent_permission = parent_permission_input == 'y'
     
     student = Student.new(nil, age, name, parent_permission: parent_permission)
+    $people << student
 
     puts "Person created successfully"
 end
@@ -71,6 +75,7 @@ def create_student
     specialization = gets.chomp
 
     teacher = Teacher.new(specialization, age, name)
+    $people << teacher
 
     puts "Person created successfully!"
 end
