@@ -19,9 +19,7 @@ def main
     when 5
       create_rental
     when 6
-      print 'Enter person id: '
-      person_id = gets.chomp.to_i
-      list_rentals_for_person(person_id)
+      list_rentals_for_person
     when 7
       puts 'Exiting the app'
       break

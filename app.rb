@@ -6,18 +6,20 @@ require './rental'
 
 @people = []
 @books = []
+@rentals = []
 
 def list_of_books
   puts 'List of all books:'
-  @books.each do |book, index|
+  @books.each_with_index do |book, index|
     puts "#{index + 1} - Title: #{book.title}, Author: #{book.author}"
   end
 end
 
 def list_of_people
   puts 'List of all people (teachers and students):'
-  @people.each do |person, index|
-    puts "#{index + 1} - Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+  @people.each_with_index do |person, index|
+    role = person.is_a?(Student) ? 'student' : 'teacher'
+    puts "#{index + 1} - [#{role}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
   end
 end
 
@@ -50,19 +52,26 @@ def create_book
 end
 
 def create_rental
-  print 'Select a book from the following list by number'
+  puts 'Select a book from the following list by number'
+  @books.each_with_index do |book, index|
+    puts "#{index + 1} - Title: #{book.title}, Author: #{book.author}"
+  end
   book_index = gets.chomp.to_i
-  book = @books[book_index]
+  book = @books[book_index - 1]
 
-  print 'Select a person from the following list by number (not id): '
+  puts 'Select a person from the following list by number (not id): '
+  @people.each_with_index do |person, index|
+    role = person.is_a?(Student) ? 'student' : 'teacher'
+    puts "#{index + 1} - [#{role}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+  end
   person_index = gets.chomp.to_i
-  person = @people[person_index]
+  person = @people[person_index - 1]
 
   puts 'Date: '
   date = gets.chomp
 
-  Rental.new(date, person, book)
-
+  rental = Rental.new(person, book, date)
+  @rentals << rental
   puts 'Rental created successfully!'
 end
 
@@ -70,9 +79,15 @@ def list_rentals_for_person
   puts 'ID of the person: '
   person_id = gets.chomp.to_i
 
-  person = @people.find { |p| p.id == person_id }
-  person.rentals.each do |rental|
-    puts "Date: #{rental.date}, Book #{rental.book.title} by #{rental.book.author}"
+  found_rentals = @rentals.select { |rental| rental.person.id == person_id }
+
+  if found_rentals.empty?
+    puts "No books found for #{person_id} id."
+  else
+    puts 'Rentals:'
+    found_rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: \"#{rental.book.title}\" by #{rental.book.author}"
+    end
   end
 end
 
@@ -86,14 +101,17 @@ def create_student
   name = gets.chomp
 
   print 'Has parent permission? [y/n]: '
-  parent_permission_input = gets.chomp.downcase
-
-  parent_permission = parent_permission_input == 'y'
-
-  student = Student.new(age, name, parent_permission)
+  parent_permission = gets.chomp
+  if parent_permission.downcase == 'n'
+    puts 'Person created successfully'
+  elsif parent_permission.downcase == 'y'
+    student = Student.new(age, name)
+    puts 'Person created successfully'
+  else
+    puts 'Invalid input, try again'
+    return
+  end
   @people << student
-
-  puts 'Person created successfully'
 end
 
 # method to create teacher
