@@ -5,6 +5,7 @@ class Library
     @books = []
     @people = []
     @rentals = []
+    @display = Display.new
   end
 
   def start
@@ -16,8 +17,7 @@ class Library
     end
 
     loop do
-      display = Display.new
-      display.display_menu
+      @display.display_menu
 
       choice = gets.chomp.to_i
 
